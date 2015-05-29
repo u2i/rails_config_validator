@@ -19,10 +19,10 @@ module RailsConfigValidator
 
     def valid!
       mv = meta_validate
-      fail RailsConfigValidator::InvalidSchemaError,
+      fail InvalidSchemaError,
            "Incorrect schema #{schema_path}; errors: #{mv}" unless mv.empty?
       v = validate
-      fail RailsConfigValidator::InvalidConfigurationError,
+      fail InvalidConfigurationError,
            "Incorrect config #{config_path}; errors: #{v}" unless v.empty?
     end
 
@@ -33,7 +33,7 @@ module RailsConfigValidator
         "[#{error.path}](#{error.error_symbol}) #{error.message}"
       end
     rescue Errno::ENOENT => e
-      raise RailsConfigValidator::InvalidSchemaError, e
+      raise InvalidSchemaError, e
     end
 
     def validate
@@ -43,10 +43,10 @@ module RailsConfigValidator
       errors.map do |error|
         "[#{error.path}](#{error.error_symbol}) #{error.message}"
       end
-    rescue RailsConfigValidator::MissingConfigurationError => e
+    rescue MissingConfigurationError => e
       [e.message]
     rescue Errno::ENOENT => e
-      raise RailsConfigValidator::InvalidConfigurationError, e
+      raise InvalidConfigurationError, e
     end
 
     private
@@ -56,7 +56,7 @@ module RailsConfigValidator
     def kwalify_validator
       Kwalify::Validator.new(schema)
     rescue Errno::ENOENT => e
-      raise RailsConfigValidator::InvalidSchemaError, e
+      raise InvalidSchemaError, e
     end
 
     def schema
@@ -69,9 +69,9 @@ module RailsConfigValidator
 
     def env_config
       document = config
-      fail RailsConfigValidator::MissingConfigurationError,
+      fail MissingConfigurationError,
            "config file #{config_path} is empty" unless document
-      fail RailsConfigValidator::MissingConfigurationError,
+      fail MissingConfigurationError,
            "missing configuration for env #{@env} in #{config_path}" unless document.key?(@env)
       document[@env]
     end
