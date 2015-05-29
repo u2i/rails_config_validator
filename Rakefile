@@ -9,7 +9,9 @@ end
 
 begin
   require 'rubocop/rake_task'
-  RuboCop::RakeTask.new
+  RuboCop::RakeTask.new(:rubocop)
 rescue LoadError => e
   puts e
 end
+
+task default: [:spec, :rubocop]
