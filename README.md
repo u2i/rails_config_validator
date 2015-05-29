@@ -2,6 +2,8 @@
 
 [![Build Status](https://travis-ci.org/u2i/rails_config_validator.svg)](https://travis-ci.org/u2i/rails_config_validator)
 [![Dependency Status](https://gemnasium.com/u2i/rails_config_validator.svg)](https://gemnasium.com/u2i/rails_config_validator)
+[![Code Climate](https://codeclimate.com/github/u2i/rails_config_validator/badges/gpa.svg)](https://codeclimate.com/github/u2i/rails_config_validator)
+[![Test Coverage](https://codeclimate.com/github/u2i/rails_config_validator/badges/coverage.svg)](https://codeclimate.com/github/u2i/rails_config_validator/coverage)
 
 Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/rails_config_validator`. To experiment with that code, run `bin/console` for an interactive prompt.
 
