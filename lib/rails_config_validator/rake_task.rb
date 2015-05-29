@@ -11,7 +11,9 @@ module RailsConfigValidator
       desc 'Validates Rails config file against YML schema'
       namespace :config_validator do
         task :validate, [:config, :schema, :env] do |_, args|
-          config, schema, env = args[:config], args[:schema], args[:env] || Rails.env
+          config = args[:config]
+          schema = args[:schema]
+          env = args[:env] || Rails.env
           fail 'Missing parameter :config' if args[:config].nil?
 
           v = RailsConfigValidator::Validator.new(config, env, schema_path: schema)
