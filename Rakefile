@@ -14,4 +14,10 @@ rescue LoadError => e
   puts e
 end
 
+begin
+  require 'ci/reporter/rake/rspec'
+rescue LoadError => e
+  puts e
+end
+
 task default: [:spec, :rubocop]
