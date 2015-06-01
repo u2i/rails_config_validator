@@ -58,14 +58,6 @@ describe RailsConfigValidator::Validator do
       it 'creates new object' do
         expect(subject).to be_truthy
       end
-
-      it 'sets config_path' do
-        expect(subject.instance_variable_get(:@config_path)).to eq(config_path)
-      end
-
-      it 'infers schema_path' do
-        expect(subject.instance_variable_get(:@schema_path)).to eq(schema_path)
-      end
     end
 
     context 'when schema path is passed explicitly' do
@@ -74,14 +66,6 @@ describe RailsConfigValidator::Validator do
 
       it 'creates new object' do
         expect(subject).to be_truthy
-      end
-
-      it 'sets config_path' do
-        expect(subject.instance_variable_get(:@config_path)).to eq(config_path)
-      end
-
-      it 'takes overwritten schema_path' do
-        expect(subject.instance_variable_get(:@schema_path)).to eq(schema_path2)
       end
     end
   end

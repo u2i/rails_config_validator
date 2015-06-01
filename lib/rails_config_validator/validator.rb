@@ -43,7 +43,7 @@ module RailsConfigValidator
       errors.map do |error|
         "[#{error.path}](#{error.error_symbol}) #{error.message}"
       end
-    rescue MissingConfigurationError => e
+    rescue InvalidConfigurationError => e
       [e.message]
     rescue Errno::ENOENT => e
       raise InvalidConfigurationError, e
@@ -60,18 +60,18 @@ module RailsConfigValidator
     end
 
     def schema
-      ::YAML.load_file(schema_path)
+      YAML.load_file(schema_path)
     end
 
     def config
-      ::YAML.load_file(config_path)
+      YAML.load_file(config_path)
     end
 
     def env_config
       document = config
-      fail MissingConfigurationError,
+      fail InvalidConfigurationError,
            "config file #{config_path} is empty" unless document
-      fail MissingConfigurationError,
+      fail InvalidConfigurationError,
            "missing configuration for env #{@env} in #{config_path}" unless document.key?(@env)
       document[@env]
     end
