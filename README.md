@@ -40,7 +40,10 @@ config.config_validator.files = %w(database.yml your-config.yml)
 
 ## Usage
 
-TODO: Write usage instructions here
+After deployment the schema can be validated with Rake task:
+
+    export RAILS_ENV=production
+    bundle exec rake config_validator:validate[config/database.yml]
 
 ## Development
 
