@@ -1,0 +1,26 @@
+type: map
+mapping:
+  adapter:
+    type: str
+    required: true
+  pool:
+    type: int
+  timeout:
+    type: int
+  database:
+    type: str
+  hostname:
+    type: str
+  username:
+    type: str
+  password:
+    type: str
+  socket:
+    type: str
+  encoding:
+    type: str
+  port:
+    type: int
+    range:
+      min: 0
+      max: 65535

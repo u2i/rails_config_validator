@@ -17,7 +17,7 @@ describe RailsConfigValidator::Validator do
     end
 
     describe '#valid!' do
-      it 'raises error' do
+      it 'does not raise error' do
         expect { validator.valid! }.to_not raise_error
       end
     end
