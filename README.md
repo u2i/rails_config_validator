@@ -4,7 +4,7 @@
 [![Dependency Status](https://gemnasium.com/u2i/rails_config_validator.svg)](https://gemnasium.com/u2i/rails_config_validator)
 [![Code Climate](https://codeclimate.com/github/u2i/rails_config_validator/badges/gpa.svg)](https://codeclimate.com/github/u2i/rails_config_validator)
 [![Test Coverage](https://codeclimate.com/github/u2i/rails_config_validator/badges/coverage.svg)](https://codeclimate.com/github/u2i/rails_config_validator/coverage)
-
+[![Gem Version](https://badge.fury.io/rb/rails_config_validator.svg)](http://badge.fury.io/rb/rails_config_validator)
 
 The gem uses [Kwalify](http://www.kuwata-lab.com/kwalify/) schema validator to check Rails configuration files syntax.
 
