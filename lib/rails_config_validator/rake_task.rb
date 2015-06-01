@@ -3,8 +3,6 @@ require 'rake/tasklib'
 
 module RailsConfigValidator
   class RakeTask < ::Rake::TaskLib
-    include ::Rake::DSL if defined?(::Rake::DSL)
-
     def initialize
       require 'rails_config_validator/validator'
 

@@ -51,25 +51,6 @@ describe RailsConfigValidator::Validator do
     end
   end
 
-  describe '#new' do
-    context 'when only config path is passed' do
-      subject { described_class.new(config_path, env) }
-
-      it 'creates new object' do
-        expect(subject).to be_truthy
-      end
-    end
-
-    context 'when schema path is passed explicitly' do
-      let(:schema_path2) { File.join(dir, "#{config_name}2.schema.yml") }
-      subject { described_class.new(config_path, env, schema_path: schema_path2) }
-
-      it 'creates new object' do
-        expect(subject).to be_truthy
-      end
-    end
-  end
-
   describe '#meta_validate' do
     let(:validator) { described_class.new(config_path, env) }
 
