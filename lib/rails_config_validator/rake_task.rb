@@ -33,7 +33,7 @@ module RailsConfigValidator
         env = args[:env] || Rails.env
         fail 'Missing parameter :config' if args[:config].nil?
 
-        v = RailsConfigValidator::Validator.new(config, env, schema_path: schema)
+        v = RailsConfigValidator::Validator.new(config, env, schema)
         v.valid!
       end
     end

@@ -4,7 +4,7 @@ require 'rails_config_validator/errors'
 
 module RailsConfigValidator
   class Validator
-    def initialize(config_path, env, schema_path: nil)
+    def initialize(config_path, env, schema_path = nil)
       @config_path = config_path
       @schema_path = schema_path || config_to_schema_path(config_path)
       @env = env
