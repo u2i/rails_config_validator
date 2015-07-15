@@ -13,7 +13,7 @@ The gem uses [Kwalify](http://www.kuwata-lab.com/kwalify/) schema validator to c
 Add this line to your application's `Gemfile`:
 
 ```ruby
-gem 'rails_config_validator', '~> 0.1'
+gem 'rails_config_validator'
 ```
 
 And then execute:
