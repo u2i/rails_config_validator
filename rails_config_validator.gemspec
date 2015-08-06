@@ -31,15 +31,4 @@ Gem::Specification.new do |spec|
 
   spec.add_development_dependency 'guard-rubocop', '~> 1.2'
   spec.add_development_dependency 'guard-rspec', '~> 4.5'
-  spec.add_development_dependency 'rubocop', '~> 0.31'
-  spec.add_development_dependency 'rubocop-rspec', '~> 1.3'
-  spec.add_development_dependency 'rubocop-checkstyle_formatter', '~> 0.2'
-
-  spec.add_development_dependency 'ci_reporter', '~> 2.0'
-  spec.add_development_dependency 'ci_reporter_rspec', '~> 1.0'
-
-  spec.add_development_dependency 'simplecov', '~> 0.10'
-  spec.add_development_dependency 'simplecov-rcov', '~> 0.2'
-  spec.add_development_dependency 'simplecov-rcov-text', '~> 0.0.3'
-  spec.add_development_dependency 'codeclimate-test-reporter', '~> 0.4'
 end

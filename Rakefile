@@ -20,4 +20,10 @@ rescue LoadError => e
   STDERR.puts e
 end
 
+begin
+  require 'ns/rake_tasks/tasks/all'
+rescue LoadError => e
+  STDERR.puts e
+end
+
 task default: [:spec, :rubocop]
