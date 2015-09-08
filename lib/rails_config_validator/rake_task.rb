@@ -9,6 +9,7 @@ module RailsConfigValidator
       namespace :config_validator do
         task_init
         task_validate
+        task_validate_all
       end
     end
 
@@ -35,6 +36,17 @@ module RailsConfigValidator
 
         v = RailsConfigValidator::Validator.new(config, env, schema)
         v.valid!
+      end
+    end
+
+    def task_validate_all
+      namespace :validate do
+        desc 'Validates all Rails config files against YML schema'
+        task :all, [:env] do |_, args|
+          Rails.application.config.config_validator.configs.each do |file_name|
+            Rake::Task['config_validator:validate'].invoke("config/#{file_name}.yml", nil, args[:env])
+          end
+        end
       end
     end
   end
