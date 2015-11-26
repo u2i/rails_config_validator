@@ -4,9 +4,10 @@ require 'rails_config_validator/errors'
 
 module RailsConfigValidator
   class Validator
-    def initialize(config_path, env, schema_path = nil)
-      @config_path = config_path
-      @schema_path = schema_path || config_to_schema_path(config_path)
+    def initialize(config_name, env, options = {})
+      @pwd = options[:pwd] || '.'
+      @config_path = options[:config_path] || build_config_path(config_name)
+      @schema_path = options[:schema_path] || build_schema_path(config_name)
       @env = env
     end
 
@@ -76,8 +77,12 @@ module RailsConfigValidator
       document[@env]
     end
 
-    def config_to_schema_path(yml)
-      yml.sub(/\.yml$/, '.schema.yml')
+    def build_config_path(config_name)
+      File.join(@pwd, 'config', "#{config_name}.yml")
+    end
+
+    def build_schema_path(config_name)
+      File.join(@pwd, 'config', 'schemas', "#{config_name}.schema.yml")
     end
   end
 end

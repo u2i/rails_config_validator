@@ -6,10 +6,8 @@ module RailsConfigValidator
     end
 
     initializer 'config_validator.configure' do
-      config_paths = config.config_validator.configs.map { |c| File.join(Rails.root, 'config', "#{c}.yml") }
-
-      validators = config_paths.map do |config|
-        RailsConfigValidator::Validator.new(config, Rails.env)
+      validators = config.config_validator.configs.map do |config|
+        RailsConfigValidator::Validator.new(config, Rails.env, pwd: Rails.root)
       end
 
       validators.each(&:valid!)

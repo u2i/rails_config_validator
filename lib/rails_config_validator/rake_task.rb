@@ -19,22 +19,22 @@ module RailsConfigValidator
       desc "Copies database.schema.yml to Rails's config directory"
       task :init do
         rake_file_dir = File.expand_path(File.dirname(__FILE__))
+        destination = FileUtils.mkpath(File.join(Dir.pwd, 'config', 'schemas'))
         FileUtils.cp(
           File.join(rake_file_dir, 'templates', 'database.schema.yml'),
-          File.join(Dir.pwd, 'config')
+          destination
         )
       end
     end
 
     def task_validate
       desc 'Validates Rails config file against YML schema'
-      task :validate, [:config, :schema, :env] do |_, args|
+      task :validate, [:config, :env] do |_, args|
         config = args[:config]
-        schema = args[:schema]
         env = args[:env] || Rails.env
         fail 'Missing parameter :config' if args[:config].nil?
 
-        v = RailsConfigValidator::Validator.new(config, env, schema)
+        v = RailsConfigValidator::Validator.new(config, env, pwd: Rails.root)
         v.valid!
       end
     end
@@ -44,7 +44,7 @@ module RailsConfigValidator
         desc 'Validates all Rails config files against YML schema'
         task :all, [:env] do |_, args|
           Rails.application.config.config_validator.configs.each do |file_name|
-            Rake::Task['config_validator:validate'].invoke("config/#{file_name}.yml", nil, args[:env])
+            Rake::Task['config_validator:validate'].invoke(file_name, args[:env])
           end
         end
       end

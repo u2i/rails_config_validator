@@ -2,12 +2,13 @@ require 'spec_helper'
 
 describe RailsConfigValidator::Validator do
   let(:dir) { Dir.mktmpdir }
-  let(:schema_path) { File.join(dir, "#{config_name}.schema.yml") }
-  let(:config_path) { File.join(dir, "#{config_name}.yml") }
+  let(:schema_path) { File.join(dir, 'config/schemas', "#{config_name}.schema.yml") }
+  let(:config_path) { File.join(dir, 'config', "#{config_name}.yml") }
   let(:config_name) { 'config' }
   let(:env) { 'test' }
   let(:schema) { margin_schema.gsub(/^\s*\|/, '') }
   let(:config) { margin_config.gsub(/^\s*\|/, '') }
+  before { FileUtils.mkpath(File.join(dir, 'config/schemas')) }
 
   shared_examples_for 'valid configuration' do
     describe '#valid?' do
@@ -52,7 +53,7 @@ describe RailsConfigValidator::Validator do
   end
 
   describe '#meta_validate' do
-    let(:validator) { described_class.new(config_path, env) }
+    let(:validator) { described_class.new(config_name, env, pwd: dir) }
 
     subject { validator.meta_validate }
 
@@ -122,7 +123,7 @@ describe RailsConfigValidator::Validator do
   end
 
   describe '#validate' do
-    let(:validator) { described_class.new(config_path, env) }
+    let(:validator) { described_class.new(config_name, env, pwd: dir) }
 
     subject { validator.validate }
 
