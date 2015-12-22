@@ -5,6 +5,12 @@ module RailsConfigValidator
       config.config_validator.configs %w(database)
     end
 
+    rake_tasks do
+      require_relative 'rake_task'
+
+      RailsConfigValidator::RakeTask.new
+    end
+
     initializer 'config_validator.configure' do
       validators = config.config_validator.configs.map do |config|
         RailsConfigValidator::Validator.new(config, Rails.env, pwd: Rails.root)
