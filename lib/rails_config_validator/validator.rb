@@ -1,5 +1,6 @@
 require 'kwalify'
 require 'yaml'
+require 'erb'
 require 'rails_config_validator/errors'
 
 module RailsConfigValidator
@@ -65,7 +66,7 @@ module RailsConfigValidator
     end
 
     def config
-      YAML.load_file(config_path)
+      YAML.load(ERB.new((File.read(config_path))).result)
     end
 
     def env_config
