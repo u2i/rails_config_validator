@@ -13,29 +13,22 @@ The gem uses [Kwalify](http://www.kuwata-lab.com/kwalify/) schema validator to c
 Add this line to your application's `Gemfile`:
 
 ```ruby
-gem 'rails_config_validator'
+gem 'rails_config_validator', '~> 3.1'
 ```
 
 And then execute:
 
     $ bundle
 
-Add Rake tasks to `Rakefile`:
-
-```ruby
-require 'rails_config_validator/rake_task'
-RailsConfigValidator::RakeTask.new
-```
-
-Run Rake task to copy default `database.yml` schema file and add `config/database.schema.yml` to your version control:
+Run Rake task to copy default `database.yml` schema file and add `config/schemas/database.schema.yml` to your version control:
 
     rake config_validator:init
-    git add config/database.schema.yml
+    git add config/schemas/database.schema.yml
 
 Specify files for which the gem should run validation `config/application.rb` or in environment file:
 
 ```ruby
-config.config_validator.files = %w(database.yml your-config.yml)
+config.config_validator.configs = %w(database your-config)
 ```
 
 ## Usage
