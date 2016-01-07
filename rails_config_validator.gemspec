@@ -24,10 +24,10 @@ Gem::Specification.new do |spec|
   end
 
   spec.add_dependency 'kwalify', '~> 0.7.2'
-  # spec.add_dependency 'rails'
 
   spec.add_development_dependency 'bundler', '~> 1.7'
   spec.add_development_dependency 'rake', '~> 10.0'
+  spec.add_development_dependency 'u2i-ci_utils', '~> 1.0.2'
 
   spec.add_development_dependency 'guard-rubocop', '~> 1.2'
   spec.add_development_dependency 'guard-rspec', '~> 4.5'

@@ -21,7 +21,7 @@ rescue LoadError => e
 end
 
 begin
-  require 'ns/rake_tasks/tasks/all'
+  require 'u2i/ci_utils/rake_tasks/all'
 rescue LoadError => e
   STDERR.puts e
 end
