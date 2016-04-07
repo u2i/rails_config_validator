@@ -1,7 +1,6 @@
 require: rubocop-rspec
 
 AllCops:
-  RunRailsCops: true
   Include:
     - '**/Rakefile'
     - config.ru
