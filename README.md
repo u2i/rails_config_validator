@@ -6,7 +6,7 @@
 [![Test Coverage](https://codeclimate.com/github/u2i/rails_config_validator/badges/coverage.svg)](https://codeclimate.com/github/u2i/rails_config_validator/coverage)
 [![Gem Version](https://badge.fury.io/rb/rails_config_validator.svg)](http://badge.fury.io/rb/rails_config_validator)
 
-The gem uses [Kwalify](http://www.kuwata-lab.com/kwalify/) schema validator to check Rails configuration files syntax.
+The gem uses [Kwalify](http://www.kuwata-lab.com/kwalify/) schema validator to check Rails configuration files syntax and content.
 
 ## Installation
 
@@ -53,4 +53,4 @@ To install this gem onto your local machine, run `bundle exec rake install`.
 2. Create your feature branch (`git checkout -b feature/my-new-feature`)
 3. Commit your changes (`git commit -am 'Add some feature'`)
 4. Push to the branch (`git push origin feature/my-new-feature`)
-5. Create a new Pull Request to branch `develop`.
+5. Create a new Pull Request to branch `master`.
