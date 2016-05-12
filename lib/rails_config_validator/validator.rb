@@ -10,6 +10,7 @@ module RailsConfigValidator
       @config_path = options[:config_path] || build_config_path(config_name)
       @schema_path = options[:schema_path] || build_schema_path(config_name)
       @env = env
+      @raise_errors = options.fetch(:raise_errors, true)
     end
 
     def valid?
@@ -21,11 +22,17 @@ module RailsConfigValidator
 
     def valid!
       mv = meta_validate
-      fail InvalidSchemaError,
-           "Incorrect schema #{schema_path}; errors: #{mv}" unless mv.empty?
+      return error(
+        InvalidSchemaError,
+        "Incorrect schema #{schema_path}; errors: #{mv}"
+      ) unless mv.empty?
       v = validate
-      fail InvalidConfigurationError,
-           "Incorrect config #{config_path}; errors: #{v}" unless v.empty?
+      error(
+        InvalidConfigurationError,
+        "Incorrect config #{config_path}; errors: #{v}"
+      ) unless v.empty?
+    rescue InvalidConfigurationError, InvalidSchemaError => e
+      error(e.class, e)
     end
 
     def meta_validate
@@ -55,6 +62,11 @@ module RailsConfigValidator
 
     attr_reader :config_path, :schema_path
 
+    def error(*args)
+      raise(*args) if @raise_errors
+      warn(args.join("\n")) # Ruby 1.9 accepts only single argument
+    end
+
     def kwalify_validator
       Kwalify::Validator.new(schema)
     rescue Errno::ENOENT => e
@@ -66,15 +78,15 @@ module RailsConfigValidator
     end
 
     def config
-      YAML.load(ERB.new((File.read(config_path))).result)
+      YAML.load(ERB.new(File.read(config_path)).result)
     end
 
     def env_config
       document = config
-      fail InvalidConfigurationError,
-           "config file #{config_path} is empty" unless document
-      fail InvalidConfigurationError,
-           "missing configuration for env #{@env} in #{config_path}" unless document.key?(@env)
+      raise InvalidConfigurationError,
+            "config file #{config_path} is empty" unless document
+      raise InvalidConfigurationError,
+            "missing configuration for env #{@env} in #{config_path}" unless document.key?(@env)
       document[@env]
     end
 

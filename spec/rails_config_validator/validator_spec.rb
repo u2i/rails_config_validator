@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe RailsConfigValidator::Validator do
+RSpec.describe RailsConfigValidator::Validator do
   let(:dir) { Dir.mktmpdir }
   let(:schema_path) { File.join(dir, 'config/schemas', "#{config_name}.schema.yml") }
   let(:config_path) { File.join(dir, 'config', "#{config_name}.yml") }
@@ -8,52 +8,128 @@ describe RailsConfigValidator::Validator do
   let(:env) { 'test' }
   let(:schema) { margin_schema.gsub(/^\s*\|/, '') }
   let(:config) { margin_config.gsub(/^\s*\|/, '') }
+  let(:raise_errors_option) { true }
+  let(:opts) { {pwd: dir} }
   before { FileUtils.mkpath(File.join(dir, 'config/schemas')) }
 
   shared_examples_for 'valid configuration' do
     describe '#valid?' do
+      subject { validator.valid? }
+
       it 'is invalid' do
-        expect(validator.valid?).to eq(true)
+        expect(subject).to eq(true)
       end
     end
 
     describe '#valid!' do
-      it 'does not raise error' do
-        expect { validator.valid! }.to_not raise_error
+      subject { validator.valid! }
+
+      let(:opts) { {pwd: dir, raise_errors: raise_errors_option} }
+
+      context 'when raise_error is set to true' do
+        let(:raise_errors_option) { true }
+
+        it 'does not raise error' do
+          expect { subject }.not_to raise_error
+        end
+
+        it 'does not display warning' do
+          expect { subject }.not_to output.to_stderr
+        end
+      end
+
+      context 'when raise_error is set to false' do
+        let(:raise_errors_option) { false }
+
+        it 'does not raise error' do
+          expect { subject }.not_to raise_error
+        end
+
+        it 'does not display warning' do
+          expect { subject }.not_to output.to_stderr
+        end
       end
     end
   end
 
   shared_examples_for 'invalid configuration' do
     describe '#valid?' do
+      subject { validator.valid? }
+
       it 'is invalid' do
-        expect(validator.valid?).to eq(false)
+        expect(subject).to eq(false)
       end
     end
 
     describe '#valid!' do
-      it 'raises error' do
-        expect { validator.valid! }.to raise_error(RailsConfigValidator::InvalidConfigurationError)
+      subject { validator.valid! }
+
+      let(:opts) { {pwd: dir, raise_errors: raise_errors_option} }
+      let(:expected_warning) { /^RailsConfigValidator::InvalidConfigurationError\n#{warning_message}/ }
+      let(:warning_message) { /^(Incorrect config .+; errors: |No such file or directory)/ }
+
+      context 'when raise_error is set to true' do
+        let(:raise_errors_option) { true }
+
+        it 'raises error' do
+          expect { subject }.to raise_error(RailsConfigValidator::InvalidConfigurationError, warning_message)
+        end
+
+        it 'does not display warning' do
+          expect { subject rescue nil }.not_to output.to_stderr
+        end
+      end
+
+      context 'when raise_error is set to false' do
+        let(:raise_errors_option) { false }
+
+        it 'displays warning' do
+          expect { subject }.to output(expected_warning).to_stderr
+        end
       end
     end
   end
 
   shared_examples_for 'invalid schema' do
     describe '#valid?' do
+      subject { validator.valid? }
+
       it 'is invalid' do
-        expect(validator.valid?).to eq(false)
+        expect(subject).to eq(false)
       end
     end
 
     describe '#valid!' do
-      it 'raises error' do
-        expect { validator.valid! }.to raise_error(RailsConfigValidator::InvalidSchemaError)
+      subject { validator.valid! }
+
+      let(:opts) { {pwd: dir, raise_errors: raise_errors_option} }
+      let(:expected_warning) { /^RailsConfigValidator::InvalidSchemaError\n#{warning_message}/ }
+      let(:warning_message) { /^(Incorrect schema .+; errors: |No such file or directory)/ }
+
+      context 'when raise_error is set to true' do
+        let(:raise_errors_option) { true }
+
+        it 'raises error' do
+          expect { subject }.to raise_error(RailsConfigValidator::InvalidSchemaError, warning_message)
+        end
+
+        it 'does not display warning' do
+          expect { subject rescue nil }.not_to output.to_stderr
+        end
+      end
+
+      context 'when raise_error is set to false' do
+        let(:raise_errors_option) { false }
+
+        it 'displays warning' do
+          expect { subject }.to output(expected_warning).to_stderr
+        end
       end
     end
   end
 
   describe '#meta_validate' do
-    let(:validator) { described_class.new(config_name, env, pwd: dir) }
+    let(:validator) { described_class.new(config_name, env, opts) }
 
     subject { validator.meta_validate }
 
@@ -72,7 +148,7 @@ describe RailsConfigValidator::Validator do
         let(:margin_schema) { '' }
 
         it 'returns errors' do
-          expect(subject).to_not be_empty
+          expect(subject).not_to be_empty
         end
 
         it_behaves_like 'invalid schema'
@@ -100,7 +176,7 @@ describe RailsConfigValidator::Validator do
         end
 
         it 'returns errors' do
-          expect(subject).to_not be_empty
+          expect(subject).not_to be_empty
         end
 
         it_behaves_like 'invalid schema'
@@ -114,7 +190,7 @@ describe RailsConfigValidator::Validator do
         end
 
         it 'returns errors' do
-          expect(subject).to_not be_empty
+          expect(subject).not_to be_empty
         end
 
         it_behaves_like 'invalid schema'
@@ -123,7 +199,7 @@ describe RailsConfigValidator::Validator do
   end
 
   describe '#validate' do
-    let(:validator) { described_class.new(config_name, env, pwd: dir) }
+    let(:validator) { described_class.new(config_name, env, opts) }
 
     subject { validator.validate }
 
@@ -187,7 +263,7 @@ describe RailsConfigValidator::Validator do
           end
 
           it 'has no errors' do
-            expect(subject).to_not be_empty
+            expect(subject).not_to be_empty
           end
 
           it 'reports empty config file' do
@@ -210,7 +286,7 @@ describe RailsConfigValidator::Validator do
           end
 
           it 'has no errors' do
-            expect(subject).to_not be_empty
+            expect(subject).not_to be_empty
           end
 
           it 'reports empty config file' do
@@ -252,7 +328,7 @@ describe RailsConfigValidator::Validator do
           end
 
           it 'has no errors' do
-            expect(subject).to_not be_empty
+            expect(subject).not_to be_empty
           end
 
           it 'returns error' do
@@ -273,7 +349,7 @@ describe RailsConfigValidator::Validator do
           end
 
           it 'has no errors' do
-            expect(subject).to_not be_empty
+            expect(subject).not_to be_empty
           end
 
           it 'returns error' do

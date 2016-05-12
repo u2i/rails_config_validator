@@ -32,7 +32,7 @@ module RailsConfigValidator
       task :validate, [:config, :env] do |_, args|
         config = args[:config]
         env = args[:env] || Rails.env
-        fail 'Missing parameter :config' if args[:config].nil?
+        raise 'Missing parameter :config' if args[:config].nil?
 
         v = RailsConfigValidator::Validator.new(config, env, pwd: Rails.root)
         v.valid!

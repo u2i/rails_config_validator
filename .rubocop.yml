@@ -1,1 +1,8 @@
 inherit_from: .rubocop_u2i.yml
+
+AllCops:
+  TargetRubyVersion: 1.9
+
+Style/RescueModifier:
+  Exclude:
+  - spec/**/*_spec.rb
