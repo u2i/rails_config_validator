@@ -1,0 +1,15 @@
+version: '2'
+volumes:
+  gems:
+    external: true
+services:
+  app:
+    image: ruby:2.3
+    working_dir: /code
+    command: /sbin/init
+    environment:
+    - GEM_HOME=/gems/${EXECUTOR_NUMBER}/gem_home
+    - BUNDLE_PATH=/gems/${EXECUTOR_NUMBER}/bundle_path
+    volumes:
+    - .:/code
+    - gems:/gems
