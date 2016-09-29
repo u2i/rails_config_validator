@@ -8,8 +8,8 @@ services:
     working_dir: /code
     command: /sbin/init
     environment:
-    - GEM_HOME=/gems/${EXECUTOR_NUMBER}/gem_home
-    - BUNDLE_PATH=/gems/${EXECUTOR_NUMBER}/bundle_path
+    - GEM_HOME=/gems/${EXECUTOR_NUMBER}/gem_home/2.3
+    - BUNDLE_PATH=/gems/${EXECUTOR_NUMBER}/gem_home/2.3
     volumes:
     - .:/code
     - gems:/gems

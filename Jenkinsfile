@@ -1,34 +1,34 @@
 node('docker') {
     withCleanup {
-        stage name: 'prepare shared volume', concurrency: 1
+        stage name: "Setup Docker Volume", concurrency: 1
         setupDockerVolume('gems')
 
         wrap([$class: 'TimestamperBuildWrapper']) {
-            stage 'checkout'
+            stage 'Checkout'
             checkout(scm)
 
-            stage 'setup docker'
+            stage 'Setup'
             withDockerCompose { compose ->
                 compose.createLocalUser('app')
                 compose.execRoot('app', 'chown jenkins:jenkins /gems')
 
                 compose.exec('app', "gem install bundler && bundle install --quiet")
 
-                stage 'tests'
+                stage 'Tests'
                 try {
                     compose.exec('app', "bundle exec rake ci:spec")
                 } finally {
                     publishTestResults()
                 }
 
-                stage 'style'
+                stage 'Static Analysis'
                 try {
                     compose.exec('app', "bundle exec rake ci:rubocop")
                 } finally {
                     publishStyleCheckResults()
                 }
 
-                stage 'cleanup'
+                stage 'Cleanup'
             }
         }
     }
