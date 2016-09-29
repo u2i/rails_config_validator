@@ -1,7 +1,7 @@
 node('docker') {
     withCleanup {
         stage name: 'prepare shared volume', concurrency: 1
-        sh "(docker volume inspect gems > /dev/null 2>&1) || docker volume create --name=gems"
+        setupDockerVolume('gems')
 
         wrap([$class: 'TimestamperBuildWrapper']) {
             stage 'checkout'
