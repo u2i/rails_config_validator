@@ -12,7 +12,7 @@ node('docker') {
                 compose.createLocalUser('app')
                 compose.execRoot('app', 'chown jenkins:jenkins /gems')
 
-                compose.exec('app', "bundle install --quiet")
+                compose.exec('app', "gem install bundler && bundle install --quiet")
 
                 stage 'tests'
                 try {
@@ -40,12 +40,4 @@ def publishTestResults() {
 
 def publishStyleCheckResults() {
     step([$class: 'CheckStylePublisher', pattern: 'checkstyle.xml'])
-}
-
-def withCleanup(Closure cl) {
-    try {
-        cl()
-    } finally {
-        step([$class: 'WsCleanup'])
-    }
 }
