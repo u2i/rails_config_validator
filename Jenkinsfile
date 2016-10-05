@@ -5,7 +5,7 @@ node('docker') {
         stage name: "Setup Docker Volume", concurrency: 1
         setupDockerVolume("gems-${env.EXECUTOR_NUMBER}-ruby-2.3")
 
-        withTimestamsp {
+        withTimestamps {
             stage 'Checkout'
             checkout(scm)
 
