@@ -1,3 +1,5 @@
+discardOldBuilds()
+
 node('docker') {
     withCleanup {
         stage name: "Setup Docker Volume", concurrency: 1
