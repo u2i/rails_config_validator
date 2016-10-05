@@ -1,3 +1,4 @@
+setDockerImageName()
 discardOldBuilds()
 
 node('docker') {
