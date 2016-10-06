@@ -1,18 +1,20 @@
+setDockerImageName()
+discardOldBuilds()
+
 node('docker') {
     withCleanup {
         stage name: "Setup Docker Volume", concurrency: 1
-        setupDockerVolume('gems')
+        setupDockerVolume("gems-${env.EXECUTOR_NUMBER}-ruby-2.3")
 
-        wrap([$class: 'TimestamperBuildWrapper']) {
+        withTimestamps {
             stage 'Checkout'
             checkout(scm)
 
             stage 'Setup'
             withDockerCompose { compose ->
-                compose.createLocalUser('app')
-                compose.execRoot('app', 'chown jenkins:jenkins /gems')
-
-                compose.exec('app', "gem install bundler && bundle install --quiet")
+                stage 'Resolve Dependencies'
+                compose.exec('app', "gem install bundler -- --silent --quiet --no-verbose --no-document")
+                compose.exec('app', "bundle install --quiet")
 
                 stage 'Tests'
                 try {

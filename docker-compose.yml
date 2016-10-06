@@ -1,15 +1,18 @@
 version: '2'
 volumes:
   gems:
-    external: true
+    external:
+        name: gems-${EXECUTOR_NUMBER}-ruby-2.3
 services:
   app:
-    image: ruby:2.3
-    working_dir: /code
-    command: /sbin/init
+    build:
+      context: .
+      args:
+        host_uid: $HOST_UID
+    image: ${DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_TAG}
     environment:
-    - GEM_HOME=/gems/${EXECUTOR_NUMBER}/gem_home/2.3
-    - BUNDLE_PATH=/gems/${EXECUTOR_NUMBER}/gem_home/2.3
+    - GEM_HOME=/gems
+    - BUNDLE_PATH=/gems
     volumes:
     - .:/code
     - gems:/gems
