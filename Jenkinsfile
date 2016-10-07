@@ -13,7 +13,6 @@ node('docker') {
             stage 'Setup'
             withDockerCompose { compose ->
                 stage 'Resolve Dependencies'
-                compose.exec('app', "gem install bundler -- --silent --quiet --no-verbose --no-document")
                 compose.exec('app', "bundle install --quiet")
 
                 stage 'Tests'
