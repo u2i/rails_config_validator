@@ -7,17 +7,15 @@ RUN wget --quiet --output-document=dumb-init.deb \
   apt-get update && apt-get --yes install cmake && \
   rm dumb-init.deb
 
-ARG host_uid
-RUN (getent passwd $host_uid > /dev/null) || adduser  --quiet --disabled-password --gecos '' dummy --uid $host_uid
-
-RUN mkdir -p /gems && chown $host_uid /gems
-VOLUME /gems
-
-USER $host_uid
-
 RUN bundle config --global jobs 4
 
 WORKDIR /code
+
+ADD Gemfile /code
+ADD rails_config_validator.gemspec /code
+ADD lib/rails_config_validator/version.rb /code/lib/rails_config_validator/version.rb
+RUN bundle install
+ADD . /code
 
 ENTRYPOINT ["/usr/bin/dumb-init", "--"]
 CMD ["tail", "-f", "/dev/null"]
